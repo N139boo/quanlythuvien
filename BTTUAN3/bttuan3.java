@@ -134,12 +134,90 @@ public class bttuan3 {
         System.out.println("TONG TIEN NHAP: " + tinhTongTien() + " VND");
         System.out.println("===================================");
     }
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        bttuan3 sach = new bttuan3(); 
-        sach.nhap(sc);                            
-        sach.xuat();                            
+        bttuan3[] danhSachSach = null; // Mảng lưu danh sách các cuốn sách
+        int n = 0;
+        int choice;
+
+        do {
+            System.out.println("\n========================================");
+            System.out.println("          MENU QUAN LY THU VIEN         ");
+            System.out.println("========================================");
+            System.out.println("1. Nhap danh sach n cuon sach");
+            System.out.println("2. Hien thi danh sach va tinh tong so luong, tong gia tri");
+            System.out.println("3. Tim kiem sach theo ma sach");
+            System.out.println("4. Thoat chuong trinh");
+            System.out.println("========================================");
+            System.out.print("Nhap lua chon cua ban (1-4): ");
+            choice = sc.nextInt();
+            sc.nextLine(); // Xóa bộ đệm
+
+            if (choice == 1) {
+                System.out.print("Nhap so luong sach (n): ");
+                n = sc.nextInt();
+                sc.nextLine(); // Xóa bộ đệm
+                danhSachSach = new bttuan3[n];
+                
+                for (int i = 0; i < n; i++) {
+                    System.out.println("\n--- Nhap thong tin cuon sach thu " + (i + 1) + " ---");
+                    danhSachSach[i] = new bttuan3();
+                    danhSachSach[i].nhap(sc);
+                }
+                System.out.println("=> Da nhap thanh cong " + n + " cuon sach!");
+
+            } else if (choice == 2) {
+                if (danhSachSach == null || n == 0) {
+                    System.out.println("Loi: Danh sach sach dang trong! Vui long nhap menu 1 truoc.");
+                } else {
+                    int tongSoLuongTatCa = 0;
+                    double tongGiaTriTatCa = 0;
+
+                    System.out.println("\n========== DANH SACH THU VIEN ==========");
+                    for (int i = 0; i < n; i++) {
+                        danhSachSach[i].xuat();
+                        tongSoLuongTatCa += danhSachSach[i].soLuong;
+                        tongGiaTriTatCa += danhSachSach[i].tinhTongTien();
+                    }
+
+                    System.out.println("\n========================================");
+                    System.out.println("TONG KET THU VIEN:");
+                    System.out.println("- Tong so luong sach: " + tongSoLuongTatCa);
+                    System.out.println("- Tong gia tri sach (bao gồm phí VC): " + tongGiaTriTatCa + " VND");
+                    System.out.println("========================================");
+                }
+
+            } else if (choice == 3) {
+                if (danhSachSach == null || n == 0) {
+                    System.out.println("Loi: Danh sach sach dang trong! Vui long nhap menu 1 truoc.");
+                } else {
+                    System.out.print("Nhap ma sach can tim: ");
+                    String maTimKiem = sc.nextLine();
+                    boolean found = false;
+
+                    for (int i = 0; i < n; i++) {
+                        if (danhSachSach[i].maSach.trim().equalsIgnoreCase(maTimKiem.trim())) {
+                            System.out.println("=> Tim thay sach!");
+                            danhSachSach[i].xuat();
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        System.out.println("=> Khong tim thay sach co ma: " + maTimKiem);
+                    }
+                }
+
+            } else if (choice == 4) {
+                System.out.println("Cam on ban da su dung chuong trinh. Tam biet!");
+
+            } else {
+                System.out.println("Loi: Lua chon khong hop le! Vui long chon tu 1 den 4.");
+            }
+
+        } while (choice != 4);
+
         sc.close();
     }
-}
+} // <-- Dấu này đóng class bttuan3
