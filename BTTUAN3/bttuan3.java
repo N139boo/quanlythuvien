@@ -1,5 +1,6 @@
 package BTTUAN3;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.Year;
 
@@ -10,7 +11,7 @@ public class bttuan3 {
     private int namXB;
     private double donGia;
     private int soLuong;
-    private int loaiSach; // Bài 4: Loại sách (1. SGK, 2. Tham khảo, 3. Chuyên ngành, 4. Khác)
+    private int loaiSach; // 1. SGK, 2. Tham khảo, 3. Chuyên ngành, 4. Khác
 
     public void nhap(Scanner sc) {
         int namHienTai = Year.now().getValue();
@@ -24,7 +25,6 @@ public class bttuan3 {
         System.out.print("Nhap tac gia: ");
         this.tacGia = sc.nextLine();
         
-        // Bài 1: Kiểm tra năm xuất bản hợp lệ
         do {
             System.out.print("Nhap nam xuat ban: ");
             this.namXB = sc.nextInt();
@@ -33,7 +33,6 @@ public class bttuan3 {
             }
         } while (this.namXB > namHienTai || this.namXB <= 0);
         
-        // Bài 1: Kiểm tra đơn giá > 0
         do {
             System.out.print("Nhap don gia (> 0): ");
             this.donGia = sc.nextDouble();
@@ -42,7 +41,6 @@ public class bttuan3 {
             }
         } while (this.donGia <= 0);
         
-        // Bài 1: Kiểm tra số lượng >= 0
         do {
             System.out.print("Nhap so luong (>= 0): ");
             this.soLuong = sc.nextInt();
@@ -51,7 +49,6 @@ public class bttuan3 {
             }
         } while (this.soLuong < 0);
         
-        // Bài 4: Dùng switch chọn loại sách
         System.out.println("--- CHON LOAI SACH ---");
         System.out.println("1. Sach giao khoa");
         System.out.println("2. Sach tham khao");
@@ -61,7 +58,7 @@ public class bttuan3 {
             System.out.print("Nhap lua chon (1-4): ");
             this.loaiSach = sc.nextInt();
             if (loaiSach < 1 || loaiSach > 4) {
-                System.out.println("Loi: Lua chon khong hop le. Vui long chon tu 1 den 4!");
+                System.out.println("Loi: Lua chon khong hop le! Vui long chon tu 1 den 4!");
             }
         } while (loaiSach < 1 || loaiSach > 4);
         
@@ -80,7 +77,6 @@ public class bttuan3 {
         return tinhThanhTien() + tinhPhiVanChuyen();
     }
 
-    // Bài 2: Phân loại giá
     public String phanLoaiGia() {
         if (donGia < 50000) {
             return "Sach gia thap";
@@ -93,7 +89,6 @@ public class bttuan3 {
         }
     }
 
-    // Bài 3: Phân loại tồn kho
     public String phanLoaiTonKho() {
         if (soLuong == 0) {
             return "Het sach";
@@ -106,15 +101,12 @@ public class bttuan3 {
         }
     }
 
-    // Bài 4: Lấy tên loại sách bằng switch-case
     public String getTenLoaiSach() {
-        switch (loaiSach) {
-            case 1: return "Sach giao khoa";
-            case 2: return "Sach tham khao";
-            case 3: return "Sach chuyen nganh";
-            case 4: return "Sach khac";
-            default: return "Khong xac dinh";
-        }
+        if (loaiSach == 1) return "Sach giao khoa";
+        else if (loaiSach == 2) return "Sach tham khao";
+        else if (loaiSach == 3) return "Sach chuyen nganh";
+        else if (loaiSach == 4) return "Sach khac";
+        else return "Khong xac dinh";
     }
 
     public void xuat() {
@@ -134,90 +126,141 @@ public class bttuan3 {
         System.out.println("TONG TIEN NHAP: " + tinhTongTien() + " VND");
         System.out.println("===================================");
     }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        bttuan3[] danhSachSach = null; // Mảng lưu danh sách các cuốn sách
-        int n = 0;
+        ArrayList<bttuan3> danhSachSach = new ArrayList<>();
         int choice;
 
         do {
-            System.out.println("\n========================================");
-            System.out.println("          MENU QUAN LY THU VIEN         ");
-            System.out.println("========================================");
-            System.out.println("1. Nhap danh sach n cuon sach");
-            System.out.println("2. Hien thi danh sach va tinh tong so luong, tong gia tri");
-            System.out.println("3. Tim kiem sach theo ma sach");
-            System.out.println("4. Thoat chuong trinh");
-            System.out.println("========================================");
-            System.out.print("Nhap lua chon cua ban (1-4): ");
+            System.out.println("\n==================================================");
+            System.out.println("            MENU QUAN LY THU VIEN (ARRAYLIST)     ");
+            System.out.println("==================================================");
+            System.out.println("1. Them sach");
+            System.out.println("2. Hien thi danh sach sach");
+            System.out.println("3. Tim sach theo ma sach");
+            System.out.println("4. Xoa sach theo ma sach");
+            System.out.println("5. Sua thong tin sach theo ma sach");
+            System.out.println("6. Tinh tong so luong sach");
+            System.out.println("7. Tinh tong gia tri sach");
+            System.out.println("8. Thoat");
+            System.out.println("==================================================");
+            System.out.print("Nhap lua chon cua ban (1-8): ");
             choice = sc.nextInt();
             sc.nextLine(); // Xóa bộ đệm
 
             if (choice == 1) {
-                System.out.print("Nhap so luong sach (n): ");
-                n = sc.nextInt();
-                sc.nextLine(); // Xóa bộ đệm
-                danhSachSach = new bttuan3[n];
-                
-                for (int i = 0; i < n; i++) {
-                    System.out.println("\n--- Nhap thong tin cuon sach thu " + (i + 1) + " ---");
-                    danhSachSach[i] = new bttuan3();
-                    danhSachSach[i].nhap(sc);
-                }
-                System.out.println("=> Da nhap thanh cong " + n + " cuon sach!");
+                System.out.println("\n--- THEM SACH MOI ---");
+                bttuan3 sachMoi = new bttuan3();
+                sachMoi.nhap(sc);
+                danhSachSach.add(sachMoi);
+                System.out.println("=> Them sach thanh cong!");
 
             } else if (choice == 2) {
-                if (danhSachSach == null || n == 0) {
-                    System.out.println("Loi: Danh sach sach dang trong! Vui long nhap menu 1 truoc.");
+                if (danhSachSach.isEmpty()) {
+                    System.out.println("Loi: Thu vien chua co cuon sach nao!");
                 } else {
-                    int tongSoLuongTatCa = 0;
-                    double tongGiaTriTatCa = 0;
-
-                    System.out.println("\n========== DANH SACH THU VIEN ==========");
-                    for (int i = 0; i < n; i++) {
-                        danhSachSach[i].xuat();
-                        tongSoLuongTatCa += danhSachSach[i].soLuong;
-                        tongGiaTriTatCa += danhSachSach[i].tinhTongTien();
+                    System.out.println("\n========== DANH SACH THU VIEN (" + danhSachSach.size() + " cuon) ==========");
+                    for (int i = 0; i < danhSachSach.size(); i++) {
+                        System.out.println("Sach thu " + (i + 1) + ":");
+                        danhSachSach.get(i).xuat();
                     }
-
-                    System.out.println("\n========================================");
-                    System.out.println("TONG KET THU VIEN:");
-                    System.out.println("- Tong so luong sach: " + tongSoLuongTatCa);
-                    System.out.println("- Tong gia tri sach (bao gồm phí VC): " + tongGiaTriTatCa + " VND");
-                    System.out.println("========================================");
                 }
 
             } else if (choice == 3) {
-                if (danhSachSach == null || n == 0) {
-                    System.out.println("Loi: Danh sach sach dang trong! Vui long nhap menu 1 truoc.");
+                if (danhSachSach.isEmpty()) {
+                    System.out.println("Loi: Thu vien trong!");
                 } else {
                     System.out.print("Nhap ma sach can tim: ");
-                    String maTimKiem = sc.nextLine();
+                    String maTim = sc.nextLine();
                     boolean found = false;
-
-                    for (int i = 0; i < n; i++) {
-                        if (danhSachSach[i].maSach.trim().equalsIgnoreCase(maTimKiem.trim())) {
+                    for (bttuan3 s : danhSachSach) {
+                        if (s.maSach.trim().equalsIgnoreCase(maTim.trim())) {
                             System.out.println("=> Tim thay sach!");
-                            danhSachSach[i].xuat();
+                            s.xuat();
                             found = true;
                             break;
                         }
                     }
-
                     if (!found) {
-                        System.out.println("=> Khong tim thay sach co ma: " + maTimKiem);
+                        System.out.println("=> Khong tim thay sach co ma: " + maTim);
                     }
                 }
 
             } else if (choice == 4) {
+                if (danhSachSach.isEmpty()) {
+                    System.out.println("Loi: Thu vien trong!");
+                } else {
+                    System.out.print("Nhap ma sach can xoa: ");
+                    String maXoa = sc.nextLine();
+                    boolean removed = false;
+                    for (int i = 0; i < danhSachSach.size(); i++) {
+                        if (danhSachSach.get(i).maSach.trim().equalsIgnoreCase(maXoa.trim())) {
+                            danhSachSach.remove(i);
+                            System.out.println("=> Xoa thanh cong sach co ma: " + maXoa);
+                            removed = true;
+                            break;
+                        }
+                    }
+                    if (!removed) {
+                        System.out.println("=> Khong tim thay ma sach de xoa!");
+                    }
+                }
+
+            } else if (choice == 5) {
+                if (danhSachSach.isEmpty()) {
+                    System.out.println("Loi: Thu vien trong!");
+                } else {
+                    System.out.print("Nhap ma sach can sua: ");
+                    String maSua = sc.nextLine();
+                    boolean updated = false;
+                    for (int i = 0; i < danhSachSach.size(); i++) {
+                        if (danhSachSach.get(i).maSach.trim().equalsIgnoreCase(maSua.trim())) {
+                            System.out.println("=> Nhap lai thong tin moi cho sach co ma: " + maSua);
+                            bttuan3 sachSua = new bttuan3();
+                            sachSua.nhap(sc);
+                            danhSachSach.set(i, sachSua);
+                            System.out.println("=> Cap nhat thong tin thanh cong!");
+                            updated = true;
+                            break;
+                        }
+                    }
+                    if (!updated) {
+                        System.out.println("=> Khong tim thay ma sach de sua!");
+                    }
+                }
+
+            } else if (choice == 6) {
+                if (danhSachSach.isEmpty()) {
+                    System.out.println("Loi: Thu vien trong!");
+                } else {
+                    int tongSoLuong = 0;
+                    for (bttuan3 s : danhSachSach) {
+                        tongSoLuong += s.soLuong;
+                    }
+                    System.out.println("=> Tong so luong tat ca cac sach trong thu vien: " + tongSoLuong);
+                }
+
+            } else if (choice == 7) {
+                if (danhSachSach.isEmpty()) {
+                    System.out.println("Loi: Thu vien trong!");
+                } else {
+                    double tongGiaTri = 0;
+                    for (bttuan3 s : danhSachSach) {
+                        tongGiaTri += s.tinhTongTien();
+                    }
+                    System.out.println("=> Tong gia tri tat ca cac sach (da bao gom phi VC): " + tongGiaTri + " VND");
+                }
+
+            } else if (choice == 8) {
                 System.out.println("Cam on ban da su dung chuong trinh. Tam biet!");
 
             } else {
-                System.out.println("Loi: Lua chon khong hop le! Vui long chon tu 1 den 4.");
+                System.out.println("Loi: Lua chon khong hop le! Vui long chon tu 1 den 8.");
             }
 
-        } while (choice != 4);
+        } while (choice != 8);
 
         sc.close();
     }
-} // <-- Dấu này đóng class bttuan3
+}
